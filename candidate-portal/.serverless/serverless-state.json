@@ -1,0 +1,213 @@
+{
+  "service": {
+    "service": "sr-cp-alexa",
+    "serviceObject": {
+      "name": "sr-cp-alexa"
+    },
+    "provider": {
+      "stage": "prod",
+      "region": "us-east-1",
+      "variableSyntax": "\\${([ ~:a-zA-Z0-9._'\",\\-\\/\\(\\)]+?)}",
+      "name": "aws",
+      "runtime": "nodejs6.10",
+      "memorySize": 256,
+      "cfLogs": true,
+      "versionFunctions": true,
+      "remoteFunctionData": null,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ServerlessDeploymentBucket": {
+            "Type": "AWS::S3::Bucket"
+          },
+          "SkillLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/sr-cp-alexa-prod-skill"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "prod",
+                        "sr-cp-alexa",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/sr-cp-alexa-prod-skill:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/sr-cp-alexa-prod-skill:*:*"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "sr-cp-alexa",
+                    "prod",
+                    "us-east-1",
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "SkillLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/sr-cp-alexa/prod/1513638249080-2017-12-18T23:04:09.080Z/sr-cp-alexa.zip"
+              },
+              "FunctionName": "sr-cp-alexa-prod-skill",
+              "Handler": "src/index.handler",
+              "MemorySize": 256,
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs6.10",
+              "Timeout": 6,
+              "Description": "Alexa Candidate Portal Skill"
+            },
+            "DependsOn": [
+              "SkillLogGroup",
+              "IamRoleLambdaExecution"
+            ]
+          },
+          "SkillLambdaVersionwrWfEWqvhaAwnhaT4S9ZFnEMVuvvV7jlJgaa4cIDXL0": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "SkillLambdaFunction"
+              },
+              "CodeSha256": "wrWfEWqvhaAwnhaT4S9ZFnEMVuvvV7jlJgaa4cIDXL0=",
+              "Description": "Alexa Candidate Portal Skill"
+            }
+          },
+          "SkillLambdaPermissionAlexaSkill": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "SkillLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "alexa-appkit.amazon.com"
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": {
+              "Ref": "ServerlessDeploymentBucket"
+            }
+          },
+          "SkillLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "SkillLambdaVersionwrWfEWqvhaAwnhaT4S9ZFnEMVuvvV7jlJgaa4cIDXL0"
+            }
+          }
+        }
+      },
+      "coreCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ServerlessDeploymentBucket": {
+            "Type": "AWS::S3::Bucket"
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": {
+              "Ref": "ServerlessDeploymentBucket"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "defaultStage": "dev",
+      "profiles": {
+        "dev": "alexa",
+        "prod": "alexa"
+      }
+    },
+    "functions": {
+      "skill": {
+        "handler": "src/index.handler",
+        "description": "Alexa Candidate Portal Skill",
+        "events": [
+          "alexaSkill"
+        ],
+        "name": "sr-cp-alexa-prod-skill",
+        "package": {},
+        "vpc": {}
+      }
+    },
+    "artifact": "/Users/arturskowronski/Projects/alexa-portal/candidate-portal/.serverless/sr-cp-alexa.zip"
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/sr-cp-alexa/prod/1513638249080-2017-12-18T23:04:09.080Z",
+    "artifact": "sr-cp-alexa.zip"
+  }
+}

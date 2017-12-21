@@ -1,0 +1,21 @@
+service: sr-cp-alexa
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: prod
+  region: us-east-1 # only eu-west-1 (Ireland) or us-east-1 (N. Virginia) are available for alexa
+  memorySize: 256
+  cfLogs: true
+
+functions:
+  skill: # function name
+    handler: src/index.handler # path to the alexa handler function: {path}/{filename}.{handler function}
+    description: Alexa Candidate Portal Skill
+    events:
+      - alexaSkill # function trigger. for alexa skills it 'alexaSkill'
+custom:
+  defaultStage: dev
+  profiles:
+    dev: alexa
+    prod: alexa

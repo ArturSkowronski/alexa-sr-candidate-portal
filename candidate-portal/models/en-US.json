@@ -1,0 +1,165 @@
+{
+    "interactionModel":{
+        "languageModel":{
+            "invocationName":"candidate portal",
+            "types":[
+                {
+                    "name": "LIST_OF_COMPANIES",
+                    "values": [
+                        {
+                            "id": null,
+                            "name": {
+                                "value": "SmartRecruiters Inc.",
+                                "synonyms": []
+                              }                            
+                        },
+                        {
+                            "id": null,
+                            "name": {
+                                "value": "Cartoon Network",
+                                "synonyms": []
+                              }                            
+                        },
+                        {
+                            "id": null,
+                            "name": {
+                                "value": "1",
+                                "synonyms": []
+                              }                            
+                        },
+                        {
+                            "id": null,
+                            "name": {
+                                "value": "2",
+                                "synonyms": []
+                              }                            
+                        },
+                        {
+                            "id": null,
+                            "name": {
+                                "value": "3",
+                                "synonyms": []
+                              }                            
+                        },
+                        {
+                            "id": null,
+                            "name": {
+                                "value": "4",
+                                "synonyms": []
+                              }                            
+                        }
+                    ]
+                    },
+                    {
+                    "name": "MESSAGES_OPTIONS",
+                    "values": [
+                        {
+                            "id": null,
+                            "name": {
+                                "value": "Yeah, I will do",
+                                "synonyms": []
+                              }                            
+                        },
+                        {
+                            "id": null,
+                            "name": {
+                                "value": "I want to meet tomorrow",
+                                "synonyms": []
+                              }                            
+                        }
+                        
+                    ]}
+            ],
+            "intents":[
+                {
+                  "name": "AMAZON.CancelIntent",
+                  "samples": []
+                },
+                {
+                  "name": "AMAZON.HelpIntent",
+                  "samples": []
+                },
+                {
+                  "name": "AMAZON.StopIntent",
+                  "samples": []
+                },
+                {
+                    "name":"HelloWorldIntent",
+                    "slots":[
+
+                    ],
+                    "samples":[
+                        "hello",
+                        "say hello",
+                        "say hello world"
+                    ]
+                },
+                {
+                    "name": "FeedIntent",
+                    "slots": [
+                        {
+                          "name": "Company",
+                          "type": "LIST_OF_COMPANIES"
+                        }
+                      ],
+                    "samples": [
+                        "tell me about {Company}",
+                        "the company is {Company}"
+                    ]
+                  },
+                  {
+                    "slots": [
+                      {
+                        "name": "Message",
+                        "type": "MESSAGES_OPTIONS"
+                      }
+                    ],
+                    "name": "MessageIntent",
+                    "samples":[
+                        "Reply the message with {Message}",
+                        "Correct the message with {Message}"
+                    ]
+                  },
+                  {
+                    "name": "AcceptIntent",
+                    "samples":[
+                        "Accept",
+                        "Accept offer",
+                        "Accept my offer"
+                    ]
+                  },
+                  {
+                    "name": "MoreDetailsIntent",
+                    "samples":[
+                        "more details",
+                        "details",
+                        "I want more details",
+                        "Details please",
+                        "Abort"
+                    ]
+                  },
+                  {
+                    "name": "SendIntent",
+                    "samples":[
+                        "Send",
+                        "Send the message"
+                    ]
+                  },
+                {
+                    "name":"MyNameIsIntent",
+                    "slots":[
+                        {
+                            "name":"name",
+                            "type":"AMAZON.US_FIRST_NAME"
+                        }
+                    ],
+                    "samples":[
+                        "my name is {name}",
+                        "i am {name}",
+                        "you can call me {name}"
+                    ]
+                }
+            ]
+        }
+    }
+}
